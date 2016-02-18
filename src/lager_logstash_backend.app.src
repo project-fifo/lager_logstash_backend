@@ -1,7 +1,6 @@
 {application, lager_logstash_backend, [
   {description, "Lager Logstash Logging Backend"},
   {vsn, "0.1.0"},
-  {pkg_name, lager_logstash_backend_jsx},
   {registered, []},
   {applications, [
     kernel,
