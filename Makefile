@@ -1,23 +1,20 @@
 #!/usr/bin/make
-REBAR=./rebar
+REBAR=./rebar3
 CT=./covertool
 EUNIT_DIR=./.eunit
 SRC_DIR=./src
 SERVER := erl -pa ebin -pa deps/*/ebin -smp enable -s lager -config sample.config ${ERL_ARGS}
 
-all: clean deps compile
-deps:
-				@$(REBAR) get-deps
+all: clean compile
 
 clean:
-				@$(REBAR) clean
+	@$(REBAR) clean
 
-compile: deps
-				@$(REBAR) compile
+compile:
+	@$(REBAR) compile
 
 test:
-				@$(REBAR) compile eunit skip_deps=true
-				@$(CT) -cover $(EUNIT_DIR)/eunit.coverdata -output $(EUNIT_DIR)/coverage.xml -src $(SRC_DIR)
+	@$(REBAR) eunit
 
 shell:			
-				${SERVER} -name lager@`hostname` -boot start_sasl
+	${SERVER} -name lager@`hostname` -boot start_sasl
