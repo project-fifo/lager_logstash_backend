@@ -1,16 +1,10 @@
-{application, lager_logstash_backend, [
-  {description, "Lager Logstash Logging Backend"},
-  {vsn, "0.1.0"},
-  {registered, []},
-  {applications, [
-    kernel,
-    stdlib,
-    jsx,
-    lager
-  ]},
-  {env, []},
-  {maintainers, ["inaka", "Heinz N. Gies"]},
-  {licenses,["Apache"]},
-  {links,[{"Github",
-           "https://github.com/inaka/lager_logstash_backend.git"}]}
-]}.
+{application,lager_logstash_backend,
+             [{description,"Lager Logstash Logging Backend"},
+              {vsn,"0.1.1"},
+              {registered,[]},
+              {applications,[kernel,stdlib,jsx,lager]},
+              {env,[]},
+              {maintainers,["inaka","Heinz N. Gies"]},
+              {licenses,["Apache"]},
+              {links,[{"Github",
+                       "https://github.com/inaka/lager_logstash_backend.git"}]}]}.
