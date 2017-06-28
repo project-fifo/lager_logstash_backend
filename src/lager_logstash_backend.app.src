@@ -1,6 +1,6 @@
 {application,lager_logstash_backend,
              [{description,"Lager Logstash Logging Backend"},
-              {vsn,"0.1.2"},
+              {vsn,git},
               {registered,[]},
               {applications,[kernel,stdlib,jsone,lager]},
               {env,[]},
