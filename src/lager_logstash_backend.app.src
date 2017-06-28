@@ -2,7 +2,7 @@
              [{description,"Lager Logstash Logging Backend"},
               {vsn,"0.1.1"},
               {registered,[]},
-              {applications,[kernel,stdlib,jsx,lager]},
+              {applications,[kernel,stdlib,jsone,lager]},
               {env,[]},
               {maintainers,["inaka","Heinz N. Gies"]},
               {licenses,["Apache"]},

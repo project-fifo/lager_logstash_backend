@@ -16,9 +16,9 @@
          get_app_version/0
 ]).
 
--record(state, {socket :: pid(),
+-record(state, {socket :: port() | undefined,
                 lager_level_type :: 'mask' | 'number' | 'unknown',
-                level :: atom(),
+                level :: atom() | undefined | pos_integer(),
                 logstash_host :: string(),
                 logstash_port :: number(),
                 logstash_address :: inet:ip_address(),
@@ -89,7 +89,9 @@ handle_event({log, _}, #state{socket=S}=State) when S =:= undefined ->
 handle_event({log, {lager_msg, Q, Metadata, Severity, {Date, Time}, _, Message}}, State) ->
   handle_event({log, {lager_msg, Q, Metadata, Severity, {Date, Time}, Message}}, State);
 
-handle_event({log, {lager_msg, _, Metadata, Severity, {Date, Time}, Message}}, #state{level=L, metadata=Config_Meta}=State) ->
+handle_event({log, {lager_msg, _, Metadata, Severity, {Date, Time}, Message}},
+             #state{level = L, metadata = Config_Meta, socket = Socket} = State)
+  when is_port(Socket) ->
   case lager_util:level_to_num(Severity) =< L of
     true ->
       Encoded_Message = encode_json_event(State#state.lager_level_type,
@@ -101,7 +103,7 @@ handle_event({log, {lager_msg, _, Metadata, Severity, {Date, Time}, Message}}, #
                                                   Time,
                                                   Message,
                                                   metadata(Metadata, Config_Meta)),
-      gen_udp:send(State#state.socket,
+      gen_udp:send(Socket,
                    State#state.logstash_address,
                    State#state.logstash_port,
                    Encoded_Message);
@@ -130,7 +132,7 @@ code_change(_OldVsn, State, _Extra) ->
 encode_json_event(
   _, Node, Node_Role, Node_Version, Severity, Date, Time, Message, Metadata) ->
   DateTime = io_lib:format("~sT~s", [Date, Time]),
-  jsx:encode([
+  jsone:encode([
                 {<<"fields">>, 
                     [
                         {<<"level">>, Severity},
